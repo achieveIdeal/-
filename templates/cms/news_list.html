@@ -1,0 +1,148 @@
+{% extends 'cms/base.html' %}
+{% block content-header %}
+
+{% endblock %}
+{% block link %}
+  <link rel="stylesheet"
+        href="../../static/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box">
+        <div class="box-header">
+          <form action="" class="form-inline">
+            <div style="margin-right: 20px" class="form-group">
+              <label for="start-packer">时间：</label>
+              {% if start %}
+                <input value="{{ start }}" readonly id="start-packer" name="start" placeholder="起始时间" type="text"
+                       class="form-control">
+              {% else %}
+                <input readonly id="start-packer" name="start" placeholder="起始时间" type="text" class="form-control">
+              {% endif %}
+              <span>－</span>
+              {% if end %}
+                <input readonly value="{{ end }}" id="end-picker" type="text" name="end" placeholder="结束时间"
+                       class="form-control">
+              {% else %}
+                <input readonly id="end-picker" type="text" name="end" placeholder="结束时间" class="form-control">
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="title-input">标题：</label>
+              {% if title %}
+                <input value="{{ title }}" type="text" id="title-input" placeholder="关键字" name="title"
+                       class="form-control">
+              {% else %}
+                <input type="text" id="title-input" placeholder="关键字" name="title" class="form-control">
+
+              {% endif %}
+            </div>
+            <div style="margin-right: 20px" class="form-group left-group">
+              <label for="category-input">分类：</label>
+              <select name="tag_id" id="category-input" class="form-control">
+                {% if category_id == 0 %}
+                  <option value="0" selected>所有分类</option>
+                {% else %}
+
+                {% endif %}
+                {% for category in categories %}
+                  {% if category.id == category_id %}
+                    <option selected value="{{ category_id }}">{{ category.name }}</option>
+                  {% else %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                  {% endif %}
+                {% endfor %}
+
+              </select>
+            </div>
+            <div style="margin-right: 20px" class="form-group">
+              <button class="btn btn-primary left-group">查询</button>
+            </div>
+            <div class="form-group">
+              <a href="{% url 'cms:newslist' %}">清除查询</a>
+            </div>
+          </form>
+        </div>
+        <div class="box-body">
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th>标题</th>
+              <th>分类</th>
+              <th>发布时间</th>
+              <th>作者</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for news in newses %}
+              <tr>
+                <td><a target="_blank" href="{% url 'news:news_detail' %}?news_id={{  news.id }}">{{ news.title }}</a></td>
+                <td>{{ news.tag.name }}</td>
+                <td>{{ news.create_time }}</td>
+                <td>{{ news.author.username }}</td>
+                <td>
+                  <a href="{% url 'cms:news' %}?news_id={{ news.id }}" class="btn btn-info btn-xs">编辑</a>
+                  <button data-news_id="{{ news.id }}" class="btn btn-danger btn-xs delete-btn">删除</button>
+                </td>
+              </tr>
+
+            {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+        <div class="box-footer">
+          <p class="pull-left">当前：{{ current }}/总共{{ paginator.num_pages }}</p>
+
+          <ul class="pagination pull-right">
+            <!--判断是否有上一页-->
+            {% if page_obj.has_previous %}
+              <li><a href="{% url 'cms:newslist' %}?p={{ page_obj.previous_page_number }}">上一页</a></li>
+            {% else %}
+              <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+            {% endif %}
+            <!--显示第一页和省略号-->
+            {% if left_has_more %}
+              <li><a href="{% url 'cms:newslist' %}?p={{ 1 }}">第一页</a></li>
+              <li><a href="javascript:void(0)">...</a></li>
+            {% endif %}
+            <!--获取多少页，并遍历出每一页的页码,会显示出所有的页码-->
+            <!--left页码-->
+            {% for foo in left_page_count %}
+              <li><a href="{% url 'cms:newslist' %}?p={{ foo }}&{{ url_parse }}">{{ foo }}</a>
+              </li>
+            {% endfor %}
+            <!--当前页码-->
+            <li class="active"><a href="{% url 'cms:newslist' %}?p={{ current }}&{{ url_parse }}">{{ current }}</a>
+            </li>
+            <!--右边的页码-->
+            {% for foo in right_page_count %}
+              <li><a href="{% url 'cms:newslist' %}?p={{ foo }}&{{ url_parse }}">{{ foo }}</a></li>
+            {% endfor %}
+            <!--显示尾页和神略好-->
+            {% if right_has_more %}
+              <li><a href="javascript:void(0);">...</a></li>
+              <li><a href="{% url 'cms:newslist' %}?p={{ paginator.num_pages }}&{{ url_parse }}">尾页</a></li>
+            {% endif %}
+            <!--判断是否有下一页-->
+            {% if page_obj.has_next %}
+              <li><a href="{% url 'cms:newslist' %}?p={{ page_obj.next_page_number }}&{{ url_parse }}">下一页</a></li>
+            {% else %}
+              <li class="disabled"><a href="javascript:void(0);">下一页</a></li>
+            {% endif %}
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block script %}
+  <script
+  src="../../static/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+  <script
+  src="../../static/adminlte/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+  <script src="../../static/js/cms/news_list.js"></script>
+{% endblock %}

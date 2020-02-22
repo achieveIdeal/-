@@ -1,0 +1,96 @@
+{% extends 'base/base.html' %}
+{% block title %}
+  下载
+{% endblock %}
+{% block link %}
+  <link rel="stylesheet" href="../../static/css/base/reset.css">
+  <link rel="stylesheet" href="../../static/css/base/common.css">
+  <link rel="stylesheet" href="../../static/css/doc/docDownload.css">
+  <link rel="stylesheet" href="../../static/css/base/side.css">
+  <link rel="stylesheet" href="http://at.alicdn.com/t/font_684044_un7umbuwwfp.css">
+{% endblock %}
+
+{% block main_contain %}
+  <div class="main-contain ">
+    <div class="banner">
+      <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1802845035,3786939119&fm=26&gp=0.jpg"
+           alt="">
+    </div>
+    <div class="pay-doc-contain">
+      <ul class="pay-list">
+
+        {% for doc in docs %}
+          <li class="pay-item">
+            <div class="pay-img doc"></div>
+            <div class="d-contain">
+              <p class="doc-title">{{ doc.title }}</p>
+              <p class="doc-desc">{{ doc.desc }}</p>
+
+              <!-- /www/?xxx -->
+              <a href="{% url 'users:DownLoadFile' doc.id %}" class="pay-price">下载</a>
+            </div>
+          </li>
+
+        {% endfor %}
+
+
+      </ul>
+    </div>
+  </div>
+  <!-- main-contain  end -->
+  <!-- side start -->
+
+{% endblock %}
+{% block side %}
+  <aside class="side">
+    <div class="side-activities">
+      <h3 class="activities-title">在线课堂<a href="javascript:void(0)">更多</a></h3>
+      <div class="activities-img">
+        <a href="javascript:void(0);" target="_blank">
+          <img src="https://res.shiguangkey.com//file/201804/26/20180426142628123364782.jpg" alt="title">
+        </a>
+        <p class="activities-tips">对话国外小姐姐</p>
+      </div>
+      <ul class="activities-list">
+        <li>
+          <a href="javascript:void(0);" target="_blank">
+            <span class="active-status active-start">报名中</span>
+            <span class="active-title"><a href="https://www.shiguangkey.com/course/2432"> Django 项目班</a></span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);" target="_blank">
+            <span class="active-status active-end">已结束</span>
+            <span class="active-title"><a href="https://www.shiguangkey.com/course/2321">Python入门基础班</a></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="side-attention clearfix">
+      <h3 class="attention-title">关注我</h3>
+      <ul class="side-attention-address">
+        <li>
+          <a href="javascript:void(0);" target="_blank"><i class="PyWhich py-GitHub"></i>Taka</a>
+        </li>
+        <li>
+          <a href="javascript:void(0);" target="_blank"><i class="PyWhich py-zhihu"
+                                                           style="color:rgb(0, 108, 226);"></i>Taka</a>
+        </li>
+        <li>
+          <a href="javascript:void(0);" target="_blank"><i class="PyWhich py-weibo"
+                                                           style="color:rgb(245,92,110);"></i>Taka</a>
+        </li>
+      </ul>
+      <div class="side-attention-qr">
+        <p>扫码关注</p>
+      </div>
+    </div>
+
+
+  </aside>
+
+{% endblock %}
+{% block script %}
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+  <script src="../../static/js/commons.js"></script>
+{% endblock %}

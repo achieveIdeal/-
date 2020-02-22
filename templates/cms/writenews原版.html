@@ -1,0 +1,94 @@
+{% extends 'cms/base.html' %}
+{% block title %}
+  {% if news %}
+    编辑新闻
+  {% else %}
+    新闻发布
+  {% endif %}
+{% endblock %}
+{% block content-header %}
+  <h1>
+    {% if news %}
+      编辑新闻
+    {% else %}
+      新闻发布
+    {% endif %}
+  </h1>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-primary">
+        <form action="" class="form">
+          <div class="box-body" id="write-news-body" data-news="{{ news.pk }}">
+            <div class="form-group">
+              <label for="title-form">标题</label>
+
+              {% if news %}
+                <input value="{{ news.title }}" type="text" id="title-form" class="form-control" name="title">
+              {% else %}
+                <input type="text" id="title-form" class="form-control" name="title">
+
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="category-form">分类</label>
+              <select id="category-form" class="form-control" name="category">
+                  {% for category in categories %}
+                    {% if news and news.category_id == category.id %}
+                      <option selected value="{{ category.id }}">{{ category.name }}</option>
+                    {% else %}
+                      <option value="{{ category.id }}">{{ category.name }}</option>
+
+                    {% endif %}
+
+                  {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="desc-form">描述信息</label>
+              {% if news %}
+                <input value="{{ news.digest }}" type="text" id="desc-form" class="form-control" name="desc">
+              {% else %}
+                <input type="text" id="desc-form" class="form-control" name="desc">
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="thumbnail-form">缩略图</label>
+              <div class="input-group">
+                {% if news %}
+                  <input type="text" value="{{ news.image_url }}" id="thumbnail-form" class="form-control"
+                         name="thumbnail">
+                {% else %}
+                  <input type="text" id="thumbnail-form" class="form-control" name="thumbnail">
+                {% endif %}
+                <span class="input-group-btn">
+                  <label class="btn btn-default btn-file" for="up-photo">上传图片</label>
+                  <input style="display: none;" type="file" id="up-photo" class="btn btm-group up-thumbnail">
+
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="content-form">内容</label>
+              {% if news %}
+                <textarea name="content" class="form-control" id="content-form" cols="30"
+                          rows="10">{{ news.content }}</textarea>
+              {% else %}
+                <textarea name="content" class="form-control" id="content-form" cols="30" rows="10"></textarea>
+
+              {% endif %}
+            </div>
+          </div>
+          <div class="box-footer">
+            <button id="up-news" class="btn btn-primary pull-right">上传</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block script %}
+  <script src="../../static/js/cms/writenews.js"></script>
+{% endblock %}

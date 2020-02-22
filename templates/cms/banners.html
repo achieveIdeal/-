@@ -1,0 +1,87 @@
+{% extends 'cms/base.html' %}
+{% block title %}
+  轮播图管理
+{% endblock %}
+{% block link %}
+  <link rel="stylesheet" href="../../static/css/cms/banners.min.css">
+  <script src="../../static/js/template-web.js"></script>
+{% endblock %}
+{% block content-header %}
+  <h1>欢迎到轮播图管理系统</h1>
+{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12 clearfix">
+      <div class="btn-group">
+        <button id="add-banner-btn" class="btn btn-primary">
+          <i class="fa fa-plus"></i>
+          添加轮播图
+        </button>
+      </div>
+      <ul class="tips">
+        <li>支持JPG,PNG,GIF格式，最多可以上传6张图片</li>
+        <li>比例4:1，宽度在800px以上，5M以内</li>
+      </ul>
+    </div>
+  </div>
+  <div class="banner-list-group"></div>
+  <script id="banner-item" type="text/html">
+
+    {% verbatim %}
+    {{ if banner }}
+    <div class="box banner-item" data-banner-id="{{ banner.id }}">
+      {{ else }}
+      <div class="box banner-item">
+
+        {{ /if }}
+        <div class="box-header">
+          {{ if banner }}
+          <span class="priority">优先级：{{ banner.priority }}</span>
+          {{ else }}
+          <span class="priority">优先级：0</span>
+
+          {{ /if }}
+          <button id="close-btn" class="btn btn-default btn-xs pull-right">
+            <i class="fa fa-close"></i>
+          </button>
+        </div>
+        <div class="box-body clearfix">
+          <div class="thumbnail-group">
+            <input type="file" class="thumbnail-input" style="display: none;">
+            {{ if banner }}
+            <img src="{{ banner.image_url }}" alt="" class="thumbnail">
+            {{ else }}
+            <img src="../../static/images/banner_default.png" alt="" class="thumbnail">
+            {{ /if }}
+          </div>
+          <div class="more-group">
+            <div class="form-group">
+              {{ if banner }}
+              <input value="{{ banner.priority }}" type="number" name="priority" placeholder="优先级" class="form-control">
+              {{ else }}
+              <input type="number" name="priority" placeholder="优先级" class="form-control">
+
+              {{ /if }}
+
+            </div>
+            <div class="form-group">
+              {{ if banner }}
+              <input type="text" value="{{ banner.news_id }}" name="news_id" placeholder="跳转新闻" class="form-control">
+              {{ else }}
+              <input type="text" name="news_id" placeholder="跳转新闻" class="form-control">
+
+              {{ /if }}
+            </div>
+          </div>
+        </div>
+        <div class="box-footer">
+          <button id="save-banner-btn" class="btn btn-primary pull-right">保存</button>
+        </div>
+      </div>
+      {% endverbatim %}
+  </script>
+
+{% endblock %}
+{% block script %}
+  <script src="../../static/js/cms/banners.js"></script>
+{% endblock %}
